@@ -4,6 +4,7 @@
     <div class="content-container">
       <section class="top-section">
         <Dropdown name="Type" :values="types" @selected="typeChange" :defaultValue="selectedType" />
+        <Search @search="search" />
       </section>
       <section class="main-section">
         <div class="loading" v-if="loading">Loading...</div>
@@ -13,7 +14,10 @@
             <div class="video-player" v-if="activeVideo.iframe" v-html="activeVideo?.html"></div>
             <div v-else>
               <video controls @play="videoPlaying" @pause="videoPaused" :src="activeVideo.videoURL"></video>
-              <audio controls :src="activeVideo.audioURL" ref="audioRef"></audio>
+              <audio controls ref="audioRef" :key="activeVideo.audioURL">
+                <source :src="activeVideo.audioURL" />
+                <source :src="activeVideo.backupAudioURL" />
+              </audio>
             </div>
             <h3>{{activeVideo.title}}</h3>
             <a :href="activeVideo.link" target="blank" class="view-reddit">View on Reddit</a>
@@ -45,13 +49,14 @@ import { onMounted, ref, watch, defineAsyncComponent, computed } from "vue";
 import { types } from "../samples/types";
 import { subreddits } from "../samples/subs";
 import { unescape } from "html-escaper";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 export default {
   name: "Home",
   components: {
     Sidebar: defineAsyncComponent(() => import("./Sidebar.vue")),
     Dropdown: defineAsyncComponent(() => import("./Dropdown.vue")),
+    Search: defineAsyncComponent(() => import("./Search.vue")),
   },
   setup() {
     const videos = ref([]);
@@ -62,6 +67,7 @@ export default {
     const activeIdx = ref(null);
     const audioRef = ref(null);
     const route = useRoute();
+    const router = useRouter();
 
     const getUrl = (sub = "", type) => {
       return `https://api.reddit.com/r/${sub.replace("r/", "")}/${
@@ -109,6 +115,7 @@ export default {
                 ...e.media.oembed,
                 title: e.title,
                 link: `https://www.reddit.com${e.permalink}`,
+                thumbnail_url: e.media.oembed.thumbnail_url || e.thumbnail,
               };
             } else {
               if (e.media.reddit_video) {
@@ -119,6 +126,8 @@ export default {
                   audioURL:
                     videoURL.substr(0, videoURL.indexOf("DASH")) +
                     "DASH_audio.mp4",
+                  backupAudioURL:
+                    videoURL.substr(0, videoURL.indexOf("DASH")) + "audio",
                   title: e.title,
                   link: `https://www.reddit.com${e.permalink}`,
                   thumbnail_url: e.thumbnail,
@@ -176,6 +185,11 @@ export default {
       activeIdx.value = Math.ceil(Math.random() * videos.value.length);
     };
 
+    const search = (item) => {
+      let sub = item.indexOf("r/") > -1 ? item : `r/${item}`;
+      router.push("/" + sub);
+    };
+
     return {
       selected,
       subreddits,
@@ -195,6 +209,7 @@ export default {
       previous,
       next,
       random,
+      search,
     };
   },
 };

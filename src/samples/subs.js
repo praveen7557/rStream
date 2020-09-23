@@ -3,5 +3,9 @@ export const subreddits = [
   "r/deepIntoYouTube",
   "r/documentaries",
   "r/contagiousLaughter",
-  "r/gaming",
+  "r/WoahTube",
+  "r/AwfulCommercials",
+  "r/cringe",
+  "r/UnexpectedThugLife",
+  "r/TikTokCringe",
 ];

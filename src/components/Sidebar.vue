@@ -1,7 +1,7 @@
 <template>
   <nav class="sidebar">
     <router-link to="/">
-      <h3 class="brand">rVideos</h3>
+      <h3 class="brand">rStream</h3>
       <div class="subs">
         <router-link :to="`/${item}`" v-for="item in subreddits" :key="item" class="sub-link">
           <div class="sub-name">{{item}}</div>
