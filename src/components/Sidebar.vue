@@ -1,7 +1,9 @@
 <template>
   <nav class="sidebar">
     <router-link to="/">
-      <h3 class="brand"><img src="../assets/reddit.svg" /> rStream</h3>
+      <h3 class="brand">
+        <img src="../assets/reddit.svg" alt="rStream" /> rStream
+      </h3>
     </router-link>
     <div class="subs">
       <router-link

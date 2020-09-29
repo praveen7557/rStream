@@ -5,7 +5,7 @@
       <section class="top-section">
         <h3 class="brand mobile">
           <router-link to="/">
-            <img src="../assets/reddit.svg" />
+            <img src="../assets/reddit.svg" alt="rStream" />
           </router-link>
         </h3>
         <Dropdown

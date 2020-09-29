@@ -3,6 +3,7 @@
     <span class="icon"></span>
     <input
       type="text"
+      aria-label="Search"
       v-model="search"
       placeholder="Search like r/india, r/WoahTube"
       @keyup.enter="searchEnter"
