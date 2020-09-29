@@ -31,6 +31,13 @@ a {
       font-weight: bold;
       text-align: center;
       color: #fff;
+
+      img {
+        height: 30px;
+        display: inline-block;
+        position: relative;
+        top: 5px;
+      }
     }
 
     .subs {
@@ -100,6 +107,7 @@ a {
         iframe {
           width: 600px;
           height: 338px;
+          max-width: 100%;
         }
 
         .view-reddit {
@@ -167,4 +175,75 @@ button {
 .disabled {
   pointer-events: none;
   opacity: 0.4;
+}
+
+.mobile {
+  display: none;
+}
+
+@media (max-width: 576px) {
+  .sidebar {
+    display: none;
+  }
+
+  .body-container {
+    .content-container {
+      width: 100%;
+
+      .main-section {
+        padding: 10px;
+
+        .videos {
+          iframe {
+            max-height: 200px;
+          }
+        }
+
+        .list {
+          position: relative;
+          max-height: initial;
+          top: initial;
+          margin-top: 20px;
+          overflow: auto;
+          right: initial;
+          margin: 0 auto;
+          margin-top: 20px;
+        }
+      }
+
+      .top-section {
+        padding: 10px 15px;
+
+        .mobile {
+          display: block;
+        }
+
+        .brand {
+          margin: 0;
+
+          img {
+            height: 30px;
+            display: inline-block;
+            position: relative;
+          }
+        }
+      }
+    }
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+  }
+
+  button {
+    padding: 8px 15px;
+    font-size: 12px;
+  }
+
+  .subs-dropdown {
+    .select-values {
+      width: 180px !important;
+    }
+  }
 }

@@ -1,8 +1,6 @@
 <template>
   <div class="search-container">
-    <span class="icon">
-      <!-- <img sr /> -->
-    </span>
+    <span class="icon"></span>
     <input
       type="text"
       v-model="search"
@@ -35,6 +33,7 @@ export default {
   width: 240px;
   background-color: #404042;
   border-radius: 3px;
+  transition: all 0.5s;
 
   .icon {
     height: 20px;
@@ -57,6 +56,16 @@ export default {
     border: none;
     padding-left: 3px;
     color: #fff;
+  }
+}
+
+@media (max-width: 576px) {
+  .search-container {
+    width: 120px;
+
+    input {
+      width: calc(100% - 35px);
+    }
   }
 }
 </style>

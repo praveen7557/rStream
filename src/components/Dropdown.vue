@@ -1,13 +1,17 @@
 <template>
   <div class="dropdown-container" ref="node">
-    <div class="name" @click="toggle">{{displayName}}</div>
+    <div class="name" @click="toggle">
+      <div class="label">{{ displayName }}</div>
+    </div>
     <div class="select-values" v-if="isOpen">
       <div
         class="select-value"
         v-for="item in values"
         :key="item.value"
         @click="select(item)"
-      >{{item.name}}</div>
+      >
+        {{ item.name }}
+      </div>
     </div>
   </div>
 </template>
@@ -102,6 +106,24 @@ export default {
         background-color: #333;
         border-color: #333;
         text-decoration: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .dropdown-container {
+    .name {
+      .label {
+        font-size: 12px;
+        max-width: 60px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
+      &::after {
+        top: 2px;
       }
     }
   }

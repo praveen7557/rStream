@@ -3,7 +3,24 @@
     <Sidebar />
     <div class="content-container">
       <section class="top-section">
-        <Dropdown name="Type" :values="types" @selected="typeChange" :defaultValue="selectedType" />
+        <h3 class="brand mobile">
+          <router-link to="/">
+            <img src="../assets/reddit.svg" />
+          </router-link>
+        </h3>
+        <Dropdown
+          class="mobile subs-dropdown"
+          name="Type"
+          :values="subreddits"
+          @selected="subChange"
+          :defaultValue="selectedSub"
+        />
+        <Dropdown
+          name="Type"
+          :values="types"
+          @selected="typeChange"
+          :defaultValue="selectedType"
+        />
         <Search @search="search" />
       </section>
       <section class="main-section">
@@ -11,19 +28,42 @@
         <div class="no-videos" v-else-if="videos.length === 0">No Videos</div>
         <section class="videos" v-else>
           <div class="video-show">
-            <div class="video-player" v-if="activeVideo.iframe" v-html="activeVideo?.html"></div>
+            <div
+              class="video-player"
+              v-if="activeVideo.iframe"
+              v-html="activeVideo?.html"
+            ></div>
             <div v-else>
-              <video controls @play="videoPlaying" @pause="videoPaused" :src="activeVideo.videoURL"></video>
+              <video
+                controls
+                @play="videoPlaying"
+                @pause="videoPaused"
+                :src="activeVideo.videoURL"
+              ></video>
               <audio controls ref="audioRef" :key="activeVideo.audioURL">
                 <source :src="activeVideo.audioURL" />
                 <source :src="activeVideo.backupAudioURL" />
               </audio>
             </div>
-            <h3>{{activeVideo.title}}</h3>
-            <a :href="activeVideo.link" target="blank" class="view-reddit">View on Reddit</a>
+            <h3>{{ activeVideo.title }}</h3>
+            <a :href="activeVideo.link" target="blank" class="view-reddit"
+              >View on Reddit</a
+            >
             <div class="buttons" v-if="videos.length > 2">
-              <button :class="activeIdx === 0 && 'disabled'" @click="previous">Previous</button>
-              <button :class="activeIdx === videos.length - 1 && 'disabled'" @click="next">Next</button>
+              <button
+                :class="activeIdx === 0 && 'disabled'"
+                @click="previous"
+                v-if="activeIdx > 0"
+              >
+                Previous
+              </button>
+              <button
+                :class="activeIdx === videos.length - 1 && 'disabled'"
+                v-if="activeIdx < videos.length - 1"
+                @click="next"
+              >
+                Next
+              </button>
               <button @click="random">Play Random Video</button>
             </div>
           </div>
@@ -35,8 +75,12 @@
             :key="item.title"
             @click="videoChange(idx)"
           >
-            <img :src="item.thumbnail_url" :alt="item.title" :class="!item.iframe && 'small'" />
-            <h5>{{item.title}}</h5>
+            <img
+              :src="item.thumbnail_url"
+              :alt="item.title"
+              :class="!item.iframe && 'small'"
+            />
+            <h5>{{ item.title }}</h5>
           </div>
         </div>
       </section>
@@ -61,13 +105,14 @@ export default {
   setup() {
     const videos = ref([]);
     const loading = ref(false);
-    const selected = ref(null);
+    const selected = ref(subreddits[0]);
     const defaultType = ref(types[0]);
     const selectedType = ref(types[0]);
     const activeIdx = ref(null);
     const audioRef = ref(null);
     const route = useRoute();
     const router = useRouter();
+    const selectedSub = ref(subreddits[0]);
 
     const getUrl = (sub = "", type) => {
       return `https://api.reddit.com/r/${sub.replace("r/", "")}/${
@@ -75,8 +120,8 @@ export default {
       }.json?limit=100${type.t ? `&t=${type.t}` : ""}`;
     };
 
-    const changeSelected = (name) => {
-      selected.value = name;
+    const subChange = (item) => {
+      router.push("/" + item.value);
     };
 
     const getActiveVideoFormat = (items, idx) => {
@@ -150,7 +195,7 @@ export default {
     watch(
       () => route.params,
       async (params) => {
-        let sub = params.sub || subreddits[0];
+        let sub = params.sub || subreddits[0].value;
         selected.value = sub;
       }
     );
@@ -195,7 +240,7 @@ export default {
       subreddits,
       types,
       videos,
-      changeSelected,
+      // changeSelected,
       typeChange,
       selectedType,
       loading,
@@ -210,6 +255,8 @@ export default {
       next,
       random,
       search,
+      selectedSub,
+      subChange,
     };
   },
 };
