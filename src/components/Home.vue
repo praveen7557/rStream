@@ -95,12 +95,16 @@ import { subreddits } from "../samples/subs";
 import { unescape } from "html-escaper";
 import { useRoute, useRouter } from "vue-router";
 
+import Sidebar from "./Sidebar.vue";
+import Dropdown from "./Dropdown.vue";
+import Search from "./Search.vue";
+
 export default {
   name: "Home",
   components: {
-    Sidebar: defineAsyncComponent(() => import("./Sidebar.vue")),
-    Dropdown: defineAsyncComponent(() => import("./Dropdown.vue")),
-    Search: defineAsyncComponent(() => import("./Search.vue")),
+    Sidebar,
+    Dropdown,
+    Search,
   },
   setup() {
     const videos = ref([]);
